@@ -77,4 +77,32 @@ class BookController extends Controller
         // $data['members'] = \App\Member::select('id','fullname')->get();
         return view('book.return', $data);
     }
+
+    public function book_doreturn(Request $request, $book) {
+        $request->validate([
+            // 'title' => 'required|string',
+            // 'author' => 'required|string',
+            // 'isbn' => 'required|string',
+            // 'published' => 'required|numeric',
+            // 'user_id' => 'required',
+            // 'date_out' => 'required|date',
+            // 'date_in' => 'required|date',
+            'date_in_actual' => 'required|date'
+        ]);
+
+        // $request = $request->validated();
+
+        $store = \App\Books_out::find(decrypt($book))->update([
+            'date_in_actual' => $request->date_in_actual,
+        ]);
+
+
+        if ($store) {
+            $msg = 'Pengembalian buku berhasil';
+            return redirect('/report/borrow')->with('success', $msg);
+        } else {
+            $msh = 'Terjadi Kesalahan. Pengembalian Buku Gagal !';
+            return redirect('/report/borrow')->with('fail', $msg);
+        }
+    }
 }

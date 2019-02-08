@@ -23,7 +23,7 @@
                       </thead>
                       <tbody>
                         @foreach($books as $key => $book)
-                          <tr onclick="rowClick(this)" redirect="{{route('book.borrow', ['book' => encrypt($book->id)])}}" style="cursor: pointer">
+                          <tr onclick="rowClick(this)" redirect="{{$book->date_in_actual === null ? route('book.return', ['book' => encrypt($book->id)]) : route('book.borrow', ['book' => encrypt($book->book->id)])}}" style="cursor: pointer">
                             <th scope="row">{{$key+=1}}</th>
                             <td>{{$book->book->title}}</td>
                             <td>{{$book->book->author}}</td>
